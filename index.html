@@ -244,9 +244,37 @@ const blob=new Blob([contents],{type:mime}),url=URL.createObjectURL(blob),link=d
 link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 $("scanBtn").addEventListener("click",()=>{
-const source=$("htmlInput").value.trim();
-if(!source){alert('Paste HTML first, or tap "Load sample HTML" to try SiteFix.');$("htmlInput").focus();return}
-lastReport=analyzeHtml(source);renderReport(lastReport);
+  const source=$("htmlInput").value.trim();
+
+  if(!source){
+    alert('Paste HTML first, or tap "Load sample HTML" to try SiteFix.');
+    $("htmlInput").focus();
+    return;
+  }
+
+  const newReport=analyzeHtml(source);
+
+  if(lastReport){
+    previousReport=lastReport;
+    const change=newReport.score-previousReport.score;
+
+    $("previousScore").textContent=previousReport.score;
+    $("currentScore").textContent=newReport.score;
+    $("scoreChange").textContent=`${change>0?"+":""}${change}`;
+
+    $("verifyMessage").textContent=change>0
+      ? `Your score improved by ${change} points.`
+      : change<0
+        ? `Your score decreased by ${Math.abs(change)} points.`
+        : "Your score stayed the same.";
+
+    $("verifyPanel").classList.remove("hidden");
+  }else{
+    $("verifyPanel").classList.add("hidden");
+  }
+
+  lastReport=newReport;
+  renderReport(lastReport);
 });
 $("sampleBtn").addEventListener("click",()=>{$("htmlInput").value=SAMPLE_HTML;$("htmlInput").focus()});
 $("clearBtn").addEventListener("click",()=>{$("htmlInput").value="";$("report").classList.add("hidden");$("issues").replaceChildren();lastReport=null;$("htmlInput").focus()});
