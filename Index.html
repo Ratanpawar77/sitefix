@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="SiteFix checks pasted HTML for basic SEO and accessibility signals and creates a downloadable report.">
+<meta name="theme-color" content="#147d55">
+<title>SiteFix — Website Health Checker</title>
+<style>
+:root{color-scheme:light;--green:#147d55;--green-dark:#0e6040;--ink:#182230;--muted:#657286;--line:#e2e8f0;--surface:#fff;--page:#f4f7fa;--warn:#9a5700;--good-bg:#e8f7ef;--warn-bg:#fff4df;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--ink)}button,textarea{font:inherit}
+.topbar{background:var(--surface);border-bottom:1px solid var(--line);padding:16px clamp(16px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:800;letter-spacing:-.7px}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:var(--green);color:#fff;font-size:20px}
+.top-note{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.08em;text-align:right}
+main{width:min(920px,calc(100% - 32px));margin:42px auto 64px}.eyebrow{color:var(--green);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+h1{margin:10px 0 12px;font-size:clamp(32px,6vw,48px);line-height:1.08;letter-spacing:-1.6px}h1 span{color:var(--green)}.lead{max-width:680px;margin:0;color:var(--muted);line-height:1.7;font-size:16px}
+.panel{margin-top:26px;padding:clamp(18px,4vw,28px);background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 34px rgba(23,37,56,.045)}
+h2{margin:0 0 16px;font-size:20px;letter-spacing:-.3px}label{display:block;margin-bottom:10px;font-weight:750;font-size:14px}
+textarea{display:block;width:100%;min-height:190px;resize:vertical;border:1px solid #cbd5e1;border-radius:11px;padding:14px;background:#fbfcfe;color:var(--ink);line-height:1.55;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
+textarea:focus{outline:3px solid rgba(20,125,85,.15);border-color:var(--green)}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+button{border:0;border-radius:10px;padding:12px 17px;font-weight:750;cursor:pointer}button:focus-visible{outline:3px solid #8ccbb0;outline-offset:3px}.primary{background:var(--green);color:#fff}.primary:hover{background:var(--green-dark)}.secondary{background:#edf2f7;color:#253247}.secondary:hover{background:#e2e8f0}
+.hint{color:var(--muted);font-size:13px;line-height:1.6;margin:12px 0 0}.hidden{display:none!important}
+.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.metric{min-width:0;background:#f6f9fb;border:1px solid #e8edf2;border-radius:12px;padding:16px}.metric strong{display:block;font-size:29px;line-height:1.2;margin-bottom:5px}.metric span{color:var(--muted);font-size:12px}
+.report-top{display:flex;align-items:start;justify-content:space-between;gap:14px;flex-wrap:wrap}.status-pill{display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;background:#edf2f7;color:#344054;font-size:12px;font-weight:800}
+.issue-list{margin-top:18px}.issue{padding:15px 0;border-bottom:1px solid #edf0f4}.issue:last-child{border-bottom:0}.issue-head{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-weight:750}.badge{border-radius:6px;padding:4px 7px;font-size:11px;font-weight:800}.badge.pass{background:var(--good-bg);color:var(--green-dark)}.badge.fix{background:var(--warn-bg);color:var(--warn)}
+.issue p{margin:8px 0 0;color:var(--muted);line-height:1.6;font-size:14px}.footnote{margin-top:18px;padding:12px 14px;border-radius:10px;background:#f6f8fa;color:var(--muted);font-size:12px;line-height:1.6}
+footer{padding:24px 16px 32px;color:var(--muted);text-align:center;font-size:12px}
+@media(max-width:560px){main{margin-top:28px}.top-note{font-size:10px;max-width:130px;line-height:1.4}.summary{grid-template-columns:1fr}.metric{padding:13px 15px}.metric strong{font-size:25px}.actions button{flex:1 1 100%}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="brand"><span class="brand-mark" aria-hidden="true">✓</span><span>SiteFix</span></div><div class="top-note">WEBSITE HEALTH CHECKER</div></header>
+<main>
+<div class="eyebrow">Simple website audit</div>
+<h1>Find issues. <span>Fix your website.</span></h1>
+<p class="lead">Check basic SEO and accessibility signals in your HTML, understand what needs attention, and download a clear report with practical recommendations.</p>
+<section class="panel" aria-labelledby="input-heading">
+<h2 id="input-heading">Analyze your HTML</h2><label for="htmlInput">Paste the page's HTML source</label>
+<textarea id="htmlInput" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Paste HTML here, starting with <!doctype html>..."></textarea>
+<div class="actions"><button class="primary" id="scanBtn" type="button">Analyze HTML</button><button class="secondary" id="sampleBtn" type="button">Load sample HTML</button><button class="secondary" id="clearBtn" type="button">Clear</button></div>
+<p class="hint">This version analyzes HTML that you paste here. It does not automatically visit or scan a website URL. Your pasted HTML is processed in this browser page and is not uploaded by this tool.</p>
+</section>
+<section class="panel hidden" id="report" aria-labelledby="report-heading" aria-live="polite">
+<div class="report-top"><div><h2 id="report-heading">Audit report</h2><p class="hint" id="reportSummary" style="margin-top:-8px"></p></div><span class="status-pill" id="reportStatus">Basic HTML checks</span></div>
+<div class="summary" aria-label="Report summary"><div class="metric"><strong id="score">—</strong><span>Basic checklist score / 100</span></div><div class="metric"><strong id="passed">—</strong><span>Checks passed</span></div><div class="metric"><strong id="problems">—</strong><span>Checks needing attention</span></div></div>
+<div class="issue-list" id="issues"></div>
+<div class="actions"><button class="primary" id="downloadBtn" type="button">Download JSON report</button><button class="secondary" id="downloadTxtBtn" type="button">Download text report</button></div>
+<p class="footnote">This score is a simple checklist result, not a Google ranking score or a full professional accessibility, performance, security, or SEO audit. Passing checks do not guarantee a page is problem-free.</p>
+</section>
+</main>
+<footer>SiteFix · A self-directed website audit project</footer>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);let lastReport=null;
+const SAMPLE_HTML=`<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Example Small Business</title>
+<meta name="description" content="A sample website for a local small business.">
+</head>
+<body>
+<header><h1>Welcome to Example Small Business</h1></header>
+<main><p>We provide friendly local services.</p><img src="team.jpg" alt="Our team at work"></main>
+</body>
+</html>`;
+function addCheck(name,passed,recommendation,detail=""){return{name,passed:Boolean(passed),recommendation,detail}}
+function analyzeHtml(source){
+const doc=new DOMParser().parseFromString(source,"text/html");
+const title=(doc.querySelector("title")?.textContent||"").trim();
+const description=(doc.querySelector('meta[name="description"]')?.getAttribute("content")||"").trim();
+const viewport=doc.querySelector('meta[name="viewport"]');
+const h1s=[...doc.querySelectorAll("h1")],images=[...doc.querySelectorAll("img")];
+const htmlLang=(doc.documentElement.getAttribute("lang")||"").trim();
+const links=[...doc.querySelectorAll("a[href]")];
+const emptyLinks=links.filter(a=>!a.textContent.trim()&&!a.querySelector("img[alt],svg[aria-label],svg title"));
+const missingAlt=images.filter(img=>!img.hasAttribute("alt"));
+const checks=[
+addCheck("Page title",title.length>0,"Add a descriptive title inside the <title> element.",title?`Found: "${title.slice(0,120)}"`:"No non-empty title was detected."),
+addCheck("Meta description",description.length>0,"Add a concise, page-specific meta description.",description?`Found a description (${description.length} characters).`:"No non-empty meta description was detected."),
+addCheck("Mobile viewport",Boolean(viewport),'Add <meta name="viewport" content="width=device-width, initial-scale=1">.',viewport?"A viewport meta tag was detected.":"No viewport meta tag was detected."),
+addCheck("Main heading",h1s.length===1,"Use one clear main <h1> heading that describes the page.",h1s.length===1?"Exactly one h1 was detected.":`${h1s.length} h1 headings were detected; this simple check expects one.`),
+addCheck("Image alt attributes",missingAlt.length===0,'Add an alt attribute to each image. Use alt="" for decorative images.',images.length===0?"No images were found in the pasted HTML.":`${missingAlt.length} of ${images.length} images lack an alt attribute.`),
+addCheck("HTML language",htmlLang.length>0,'Set a language on the root element, for example <html lang="en">.',htmlLang?`Language attribute found: "${htmlLang}".`:"No language attribute was detected."),
+addCheck("Character encoding",Boolean(doc.querySelector("meta[charset]"))||Boolean(doc.querySelector('meta[http-equiv="content-type" i]')),'Declare UTF-8 near the start of the document with <meta charset="utf-8">.',"Checks whether a character encoding declaration exists."),
+addCheck("Link text",emptyLinks.length===0,"Give links meaningful accessible text, or an accessible name for icon-only links.",`${emptyLinks.length} link(s) may not have an accessible name in this HTML check.`)
+];
+const passed=checks.filter(c=>c.passed).length,issues=checks.length-passed;
+return{tool:"SiteFix HTML Audit",version:"1.0",createdAt:new Date().toISOString(),scope:"Pasted HTML only; not a live URL scan",score:Math.round(passed/checks.length*100),passed,issues,totalChecks:checks.length,checks};
+}
+function renderReport(result){
+$("score").textContent=result.score;$("passed").textContent=`${result.passed}/${result.totalChecks}`;$("problems").textContent=result.issues;
+$("reportSummary").textContent=`${result.totalChecks} basic checks completed on the pasted HTML.`;$("reportStatus").textContent=result.issues===0?"All checks passed":"Review recommended";
+const box=$("issues");box.replaceChildren();
+result.checks.forEach(check=>{
+const article=document.createElement("article");article.className="issue";
+const heading=document.createElement("div");heading.className="issue-head";
+const badge=document.createElement("span");badge.className=`badge ${check.passed?"pass":"fix"}`;badge.textContent=check.passed?"PASS":"REVIEW";
+const title=document.createElement("span");title.textContent=check.name;heading.append(badge,title);
+const detail=document.createElement("p");detail.textContent=check.detail;
+if(!check.passed){const recommendation=document.createElement("p");recommendation.textContent=`Recommendation: ${check.recommendation}`;article.append(heading,detail,recommendation)}else article.append(heading,detail);
+box.appendChild(article);
+});
+$("report").classList.remove("hidden");$("report").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function downloadFile(contents,mime,filename){
+const blob=new Blob([contents],{type:mime}),url=URL.createObjectURL(blob),link=document.createElement("a");
+link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+$("scanBtn").addEventListener("click",()=>{
+const source=$("htmlInput").value.trim();
+if(!source){alert('Paste HTML first, or tap "Load sample HTML" to try SiteFix.');$("htmlInput").focus();return}
+lastReport=analyzeHtml(source);renderReport(lastReport);
+});
+$("sampleBtn").addEventListener("click",()=>{$("htmlInput").value=SAMPLE_HTML;$("htmlInput").focus()});
+$("clearBtn").addEventListener("click",()=>{$("htmlInput").value="";$("report").classList.add("hidden");$("issues").replaceChildren();lastReport=null;$("htmlInput").focus()});
+$("downloadBtn").addEventListener("click",()=>{if(lastReport)downloadFile(JSON.stringify(lastReport,null,2),"application/json","sitefix-audit-report.json")});
+$("downloadTxtBtn").addEventListener("click",()=>{
+if(!lastReport)return;
+const lines=["SITEFIX — HTML AUDIT REPORT",`Created: ${lastReport.createdAt}`,`Scope: ${lastReport.scope}`,`Basic checklist score: ${lastReport.score}/100`,`Passed: ${lastReport.passed}/${lastReport.totalChecks}`,`Checks needing attention: ${lastReport.issues}`,"",...lastReport.checks.flatMap(c=>[`${c.passed?"[PASS]":"[REVIEW]"} ${c.name}`,`  ${c.detail}`,...(!c.passed?[`  Recommendation: ${c.recommendation}`]:[]),""])];
+downloadFile(lines.join("\n"),"text/plain;charset=utf-8","sitefix-audit-report.txt");
+});
+</script>
+</body>
+  </html>
+  
