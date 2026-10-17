@@ -43,7 +43,24 @@ footer{padding:24px 16px 32px;color:var(--muted);text-align:center;font-size:12p
 <section class="panel hidden" id="report" aria-labelledby="report-heading" aria-live="polite">
 <div class="report-top"><div><h2 id="report-heading">Audit report</h2><p class="hint" id="reportSummary" style="margin-top:-8px"></p></div><span class="status-pill" id="reportStatus">Basic HTML checks</span></div>
 <div class="summary" aria-label="Report summary"><div class="metric"><strong id="score">—</strong><span>Basic checklist score / 100</span></div><div class="metric"><strong id="passed">—</strong><span>Checks passed</span></div><div class="metric"><strong id="problems">—</strong><span>Checks needing attention</span></div></div>
-<div class="issue-list" id="issues"></div>
+<div class="panel hidden" id="verifyPanel">
+  <h2>Fix verification</h2>
+  <p id="verifyMessage">Run another audit to compare your results.</p>
+  <div class="summary">
+    <div class="metric">
+      <strong id="previousScore">—</strong>
+      <span>Previous score</span>
+    </div>
+    <div class="metric">
+      <strong id="currentScore">—</strong>
+      <span>Current score</span>
+    </div>
+    <div class="metric">
+      <strong id="scoreChange">—</strong>
+      <span>Score change</span>
+    </div>
+  </div>
+</div>
 <div class="actions"><button class="primary" id="downloadBtn" type="button">Download JSON report</button><button class="secondary" id="downloadTxtBtn" type="button">Download text report</button></div>
 <p class="footnote">This score is a simple checklist result, not a Google ranking score or a full professional accessibility, performance, security, or SEO audit. Passing checks do not guarantee a page is problem-free.</p>
 </section>
@@ -279,7 +296,15 @@ $("scanBtn").addEventListener("click",()=>{
   renderReport(lastReport);
 });
 $("sampleBtn").addEventListener("click",()=>{$("htmlInput").value=SAMPLE_HTML;$("htmlInput").focus()});
-$("clearBtn").addEventListener("click",()=>{$("htmlInput").value="";$("report").classList.add("hidden");$("issues").replaceChildren();lastReport=null;$("htmlInput").focus()});
+$("clearBtn").addEventListener("click",()=>{
+  $("htmlInput").value="";
+  $("report").classList.add("hidden");
+  $("issues").replaceChildren();
+  lastReport=null;
+  previousReport=null;
+  $("verifyPanel").classList.add("hidden");
+  $("htmlInput").focus();
+});
 $("downloadBtn").addEventListener("click",()=>{if(lastReport)downloadFile(JSON.stringify(lastReport,null,2),"application/json","sitefix-audit-report.json")});
 $("downloadTxtBtn").addEventListener("click",()=>{
 if(!lastReport)return;
