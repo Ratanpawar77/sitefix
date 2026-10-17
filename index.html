@@ -51,7 +51,9 @@ footer{padding:24px 16px 32px;color:var(--muted);text-align:center;font-size:12p
 <footer>SiteFix · A self-directed website audit project</footer>
 <script>
 "use strict";
-const $=id=>document.getElementById(id);let lastReport=null;
+const $=id=>document.getElementById(id);
+let lastReport=null;
+let previousReport=null;
 const SAMPLE_HTML=`<!doctype html>
 <html lang="en">
 <head>
