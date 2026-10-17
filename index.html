@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="SiteFix checks pasted HTML for basic SEO and accessibility signals and creates a downloadable report.">
 <meta name="theme-color" content="#147d55">
+<meta name="color-scheme" content="light">
 <title>SiteFix — Website Health Checker</title>
 <style>
 :root{color-scheme:light;--green:#147d55;--dark:#0e6040;--ink:#182230;--muted:#657286;--line:#e2e8f0;--page:#f4f7fa;--warn:#9a5700;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -36,13 +37,67 @@ textarea{display:block;width:100%;min-height:190px;resize:vertical;border:1px so
 <div class="issue-list" id="issues"></div>
 <section class="panel hidden" id="verifyPanel"><h2>Fix verification</h2><p id="verifyMessage" aria-live="polite">Run another audit to compare results.</p><div class="summary"><div class="metric"><strong id="previousScore">—</strong><span>Previous score</span></div><div class="metric"><strong id="currentScore">—</strong><span>Current score</span></div><div class="metric"><strong id="scoreChange">—</strong><span>Score change</span></div></div></section>
 <div class="actions"><button class="primary" id="downloadBtn" type="button">Download JSON report</button><button class="secondary" id="downloadTxtBtn" type="button">Download text report</button></div>
-<p class="footnote">This is a basic checklist, not a Google ranking score or a full professional accessibility, performance, security, or SEO audit.</p>
+<p class="footnote">This is a basic checklist, not a Google ranking score or a full professional accessibility, performance, security, or SEO audit. Your latest report and pasted HTML are saved only in this browser on this device; clearing browser site data may remove them.</p>
 </section>
 </main><footer>SiteFix · A self-directed website audit project</footer>
 <script>
 "use strict";
 const $ = id => document.getElementById(id);
 let lastReport = null;
+let previousReport = null;
+const STORAGE_KEY = "sitefix:v2:workspace";
+let storageAvailable = true;
+function saveWorkspace() {
+  if (!storageAvailable) return;
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      version: 2,
+      input: $("htmlInput").value,
+      lastReport,
+      previousReport,
+      savedAt: new Date().toISOString()
+    }));
+  } catch (error) {
+    storageAvailable = false;
+    console.warn("SiteFix could not save browser data:", error);
+    showStorageNotice("Your browser could not save this session. Download your report to keep a copy.");
+  }
+}
+function showStorageNotice(message) {
+  let notice = $("storageNotice");
+  if (!notice) {
+    notice = document.createElement("p");
+    notice.id = "storageNotice";
+    notice.className = "hint";
+    notice.setAttribute("role", "status");
+    $("input-heading").insertAdjacentElement("afterend", notice);
+  }
+  notice.textContent = message;
+}
+function restoreWorkspace() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (!saved || saved.version !== 2) return;
+    $("htmlInput").value = typeof saved.input === "string" ? saved.input : "";
+    if (isValidReport(saved.lastReport)) {
+      lastReport = saved.lastReport;
+      previousReport = isValidReport(saved.previousReport) ? saved.previousReport : null;
+      renderReport(lastReport, false);
+      if (previousReport) updateVerification(previousReport, lastReport);
+      showStorageNotice("Your last audit was restored from this browser.");
+    }
+  } catch (error) {
+    console.warn("SiteFix could not restore saved browser data:", error);
+    showStorageNotice("Saved data could not be read. You can run a new audit or restore a downloaded report manually.");
+  }
+}
+function isValidReport(report) {
+  return Boolean(report && typeof report === "object" && Array.isArray(report.checks) &&
+    Number.isFinite(report.score) && Number.isFinite(report.passed) &&
+    Number.isFinite(report.issues) && Number.isFinite(report.totalChecks));
+}
 const SAMPLE_HTML = `<!doctype html>
 <html lang="en">
 <head>
@@ -81,7 +136,7 @@ function analyzeHtml(source) {
     addCheck("Link text", emptyLinks.length === 0, "Give links meaningful accessible text or an accessible name.", `${emptyLinks.length} link(s) may not have an accessible name.`)
   ];
   const passed = checks.filter(c => c.passed).length;
-  return {tool:"SiteFix HTML Audit",version:"1.1",createdAt:new Date().toISOString(),scope:"Pasted HTML only; not a live URL scan",score:Math.round(passed/checks.length*100),passed,issues:checks.length-passed,totalChecks:checks.length,checks};
+  return {tool:"SiteFix HTML Audit",version:"2.0",createdAt:new Date().toISOString(),scope:"Pasted HTML only; not a live URL scan",score:Math.round(passed/checks.length*100),passed,issues:checks.length-passed,totalChecks:checks.length,checks};
 }
 function detailsFor(name) {
   const map = {
@@ -96,7 +151,7 @@ function detailsFor(name) {
   };
   return map[name] || ["Low","Review this check.",""];
 }
-function renderReport(report) {
+function renderReport(report, scroll = true) {
   $("score").textContent = report.score;
   $("passed").textContent = `${report.passed}/${report.totalChecks}`;
   $("problems").textContent = report.issues;
@@ -130,7 +185,7 @@ function renderReport(report) {
     box.append(article);
   });
   $("report").classList.remove("hidden");
-  $("report").scrollIntoView({behavior:"smooth",block:"start"});
+  if (scroll) $("report").scrollIntoView({behavior:"smooth",block:"start"});
 }
 function updateVerification(previous,current) {
   if (!previous) { $("verifyPanel").classList.add("hidden"); return; }
@@ -153,19 +208,33 @@ $("scanBtn").addEventListener("click", () => {
   if (!source) { alert('Paste HTML first, or tap "Load sample HTML" to try SiteFix.'); $("htmlInput").focus(); return; }
   try {
     const current = analyzeHtml(source);
-    updateVerification(lastReport,current);
+    previousReport = lastReport;
     lastReport = current;
     renderReport(current);
+    if (previousReport) updateVerification(previousReport, current);
+    else $("verifyPanel").classList.add("hidden");
+    saveWorkspace();
   } catch (error) {
     console.error("SiteFix audit error:",error);
     alert("SiteFix could not analyze this HTML. Reload the page and try again.");
   }
 });
-$("sampleBtn").addEventListener("click", () => { $("htmlInput").value = SAMPLE_HTML; $("htmlInput").focus(); });
+$("sampleBtn").addEventListener("click", () => {
+  $("htmlInput").value = SAMPLE_HTML;
+  saveWorkspace();
+  $("htmlInput").focus();
+});
+$("htmlInput").addEventListener("input", () => {
+  saveWorkspace();
+});
 $("clearBtn").addEventListener("click", () => {
   $("htmlInput").value = ""; $("report").classList.add("hidden"); $("issues").replaceChildren();
   $("verifyPanel").classList.add("hidden"); $("previousScore").textContent = "—"; $("currentScore").textContent = "—"; $("scoreChange").textContent = "—";
-  $("verifyMessage").textContent = "Run another audit to compare results."; lastReport = null; $("htmlInput").focus();
+  $("verifyMessage").textContent = "Run another audit to compare results.";
+  lastReport = null; previousReport = null;
+  try { localStorage.removeItem(STORAGE_KEY); } catch (error) { console.warn("SiteFix could not clear saved data:", error); }
+  const notice = $("storageNotice"); if (notice) notice.remove();
+  $("htmlInput").focus();
 });
 $("downloadBtn").addEventListener("click", () => {
   if (lastReport) downloadFile(JSON.stringify(lastReport,null,2),"application/json","sitefix-audit-report.json");
@@ -175,6 +244,7 @@ $("downloadTxtBtn").addEventListener("click", () => {
   const lines = ["SITEFIX — HTML AUDIT REPORT",`Created: ${lastReport.createdAt}`,`Scope: ${lastReport.scope}`,`Basic checklist score: ${lastReport.score}/100`,`Passed: ${lastReport.passed}/${lastReport.totalChecks}`,`Checks needing attention: ${lastReport.issues}`,"",...lastReport.checks.flatMap(c => [`${c.passed ? "[PASS]" : "[REVIEW]"} ${c.name}`,`  ${c.detail}`,...(!c.passed ? [`  Recommendation: ${c.recommendation}`] : []),""])];
   downloadFile(lines.join("\n"),"text/plain;charset=utf-8","sitefix-audit-report.txt");
 });
+restoreWorkspace();
 </script>
 </body>
 </html>
