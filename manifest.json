@@ -1,0 +1,31 @@
+{
+  "id": "./",
+  "name": "SiteFix \u2014 Website Health Checker",
+  "short_name": "SiteFix",
+  "description": "Check pasted HTML for basic SEO and accessibility signals and save a report.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4f7fa",
+  "theme_color": "#147d55",
+  "categories": [
+    "utilities",
+    "developer tools"
+  ],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
