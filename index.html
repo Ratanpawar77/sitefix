@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="SiteFix checks pasted HTML for basic SEO and accessibility signals and creates a downloadable report.">
 <meta name="theme-color" content="#147d55">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <meta name="color-scheme" content="light">
 <title>SiteFix — Website Health Checker</title>
 <style>
@@ -109,6 +112,16 @@ const SAMPLE_HTML = `<!doctype html>
 <body>
 <header><h1>Welcome to Example Small Business</h1></header>
 <main><p>We provide friendly local services.</p><img src="team.jpg" alt="Our team at work"></main>
+
+<script>
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch(error => console.warn("SiteFix offline support could not be enabled:", error));
+  });
+}
+</script>
+
 </body>
 </html>`;
 function addCheck(name, passed, recommendation, detail) {
@@ -246,5 +259,16 @@ $("downloadTxtBtn").addEventListener("click", () => {
 });
 restoreWorkspace();
 </script>
+
+<script>
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch(error => console.warn("SiteFix offline support could not be enabled:", error));
+  });
+}
+</script>
+
 </body>
-</html>
+    </html>
+    
