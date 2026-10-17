@@ -89,21 +89,156 @@ addCheck("Link text",emptyLinks.length===0,"Give links meaningful accessible tex
 const passed=checks.filter(c=>c.passed).length,issues=checks.length-passed;
 return{tool:"SiteFix HTML Audit",version:"1.0",createdAt:new Date().toISOString(),scope:"Pasted HTML only; not a live URL scan",score:Math.round(passed/checks.length*100),passed,issues,totalChecks:checks.length,checks};
 }
-function renderReport(result){
-$("score").textContent=result.score;$("passed").textContent=`${result.passed}/${result.totalChecks}`;$("problems").textContent=result.issues;
-$("reportSummary").textContent=`${result.totalChecks} basic checks completed on the pasted HTML.`;$("reportStatus").textContent=result.issues===0?"All checks passed":"Review recommended";
-const box=$("issues");box.replaceChildren();
-result.checks.forEach(check=>{
-const article=document.createElement("article");article.className="issue";
-const heading=document.createElement("div");heading.className="issue-head";
-const badge=document.createElement("span");badge.className=`badge ${check.passed?"pass":"fix"}`;badge.textContent=check.passed?"PASS":"REVIEW";
-const title=document.createElement("span");title.textContent=check.name;heading.append(badge,title);
-const detail=document.createElement("p");detail.textContent=check.detail;
-if(!check.passed){const recommendation=document.createElement("p");recommendation.textContent=`Recommendation: ${check.recommendation}`;article.append(heading,detail,recommendation)}else article.append(heading,detail);
-box.appendChild(article);
-});
-$("report").classList.remove("hidden");$("report").scrollIntoView({behavior:"smooth",block:"start"});
+
+function getIssueDetails(check) {
+  const fixes = {
+    "Page title": {
+      severity: "High",
+      why: "A descriptive title helps users and search engines understand the page.",
+      code: "<title>Describe Your Page</title>"
+    },
+    "Meta description": {
+      severity: "Medium",
+      why: "A useful description can help users understand the page in search results.",
+      code: '<meta name="description" content="Describe your page in a clear sentence.">'
+    },
+    "Mobile viewport": {
+      severity: "High",
+      why: "Without a viewport declaration, mobile browsers may render the page at an unsuitable width.",
+      code: '<meta name="viewport" content="width=device-width, initial-scale=1">'
+    },
+    "Main heading": {
+      severity: "Medium",
+      why: "A clear main heading helps users understand the page structure.",
+      code: "<h1>Your Main Page Heading</h1>"
+    },
+    "Image alt attributes": {
+      severity: "High",
+      why: "Missing alt attributes can make image content less accessible to screen-reader users.",
+      code: '<img src="image.jpg" alt="Describe the meaningful image">'
+    },
+    "HTML language": {
+      severity: "Medium",
+      why: "The document language helps assistive technology pronounce content correctly.",
+      code: '<html lang="en">'
+    },
+    "Character encoding": {
+      severity: "Medium",
+      why: "An explicit character encoding helps browsers interpret text correctly.",
+      code: '<meta charset="utf-8">'
+    },
+    "Link text": {
+      severity: "Medium",
+      why: "Links need accessible names so users can understand their purpose.",
+      code: '<a href="/services">View our services</a>'
+    }
+  };
+
+  return fixes[check.name] || {
+    severity: "Low",
+    why: "Review this check and confirm that the page meets the requirement.",
+    code: ""
+  };
 }
+
+function renderReport(result) {
+  $("score").textContent = result.score;
+  $("passed").textContent =
+    `${result.passed}/${result.totalChecks}`;
+  $("problems").textContent = result.issues;
+
+  $("reportSummary").textContent =
+    `${result.totalChecks} basic checks completed on the pasted HTML.`;
+
+  $("reportStatus").textContent =
+    result.issues === 0
+      ? "All checks passed"
+      : "Review recommended";
+
+  const box = $("issues");
+  box.replaceChildren();
+
+  result.checks.forEach(check => {
+    const article = document.createElement("article");
+    article.className = "issue";
+
+    const heading = document.createElement("div");
+    heading.className = "issue-head";
+
+    const badge = document.createElement("span");
+    badge.className = `badge ${check.passed ? "pass" : "fix"}`;
+    badge.textContent = check.passed ? "PASS" : "REVIEW";
+
+    const title = document.createElement("span");
+    title.textContent = check.name;
+    heading.append(badge, title);
+    article.append(heading);
+
+    const detail = document.createElement("p");
+    detail.textContent = check.detail;
+    article.append(detail);
+
+    if (!check.passed) {
+      const info = getIssueDetails(check);
+
+      const severity = document.createElement("p");
+      severity.textContent = `Suggested priority: ${info.severity}`;
+      severity.style.fontWeight = "700";
+      article.append(severity);
+
+      const why = document.createElement("p");
+      why.textContent = `Why it matters: ${info.why}`;
+      article.append(why);
+
+      const recommendation = document.createElement("p");
+      recommendation.textContent =
+        `Recommended action: ${check.recommendation}`;
+      article.append(recommendation);
+
+      if (info.code) {
+        const label = document.createElement("p");
+        label.textContent = "Example fix — review before using:";
+        article.append(label);
+
+        const code = document.createElement("pre");
+        code.textContent = info.code;
+        code.style.whiteSpace = "pre-wrap";
+        code.style.overflowWrap = "anywhere";
+        code.style.padding = "12px";
+        code.style.background = "#f1f5f9";
+        code.style.borderRadius = "8px";
+        code.style.fontSize = "12px";
+        article.append(code);
+
+        const copyButton = document.createElement("button");
+        copyButton.type = "button";
+        copyButton.className = "secondary";
+        copyButton.textContent = "Copy example fix";
+
+        copyButton.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(info.code);
+            copyButton.textContent = "Copied!";
+          } catch {
+            copyButton.textContent =
+              "Copy unavailable — select the example manually";
+          }
+        });
+
+        article.append(copyButton);
+      }
+    }
+
+    box.append(article);
+  });
+
+  $("report").classList.remove("hidden");
+  $("report").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
 function downloadFile(contents,mime,filename){
 const blob=new Blob([contents],{type:mime}),url=URL.createObjectURL(blob),link=document.createElement("a");
 link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
