@@ -2,30 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="SiteFix checks pasted HTML for basic SEO and accessibility signals and creates a downloadable report.">
 <meta name="theme-color" content="#147d55">
 <title>SiteFix — Website Health Checker</title>
 <style>
-:root{color-scheme:light;--green:#147d55;--green-dark:#0e6040;--ink:#182230;--muted:#657286;--line:#e2e8f0;--surface:#fff;--page:#f4f7fa;--warn:#9a5700;--good-bg:#e8f7ef;--warn-bg:#fff4df;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+:root{color-scheme:light;--green:#147d55;--dark:#0e6040;--ink:#182230;--muted:#657286;--line:#e2e8f0;--page:#f4f7fa;--warn:#9a5700;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
 *{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--ink)}button,textarea{font:inherit}
-.topbar{background:var(--surface);border-bottom:1px solid var(--line);padding:16px clamp(16px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:800;letter-spacing:-.7px}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:var(--green);color:#fff;font-size:20px}
-.top-note{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.08em;text-align:right}
-main{width:min(920px,calc(100% - 32px));margin:42px auto 64px}.eyebrow{color:var(--green);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-h1{margin:10px 0 12px;font-size:clamp(32px,6vw,48px);line-height:1.08;letter-spacing:-1.6px}h1 span{color:var(--green)}.lead{max-width:680px;margin:0;color:var(--muted);line-height:1.7;font-size:16px}
-.panel{margin-top:26px;padding:clamp(18px,4vw,28px);background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 34px rgba(23,37,56,.045)}
-h2{margin:0 0 16px;font-size:20px;letter-spacing:-.3px}label{display:block;margin-bottom:10px;font-weight:750;font-size:14px}
-textarea{display:block;width:100%;min-height:190px;resize:vertical;border:1px solid #cbd5e1;border-radius:11px;padding:14px;background:#fbfcfe;color:var(--ink);line-height:1.55;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px}
-textarea:focus{outline:3px solid rgba(20,125,85,.15);border-color:var(--green)}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-button{border:0;border-radius:10px;padding:12px 17px;font-weight:750;cursor:pointer}button:focus-visible{outline:3px solid #8ccbb0;outline-offset:3px}.primary{background:var(--green);color:#fff}.primary:hover{background:var(--green-dark)}.secondary{background:#edf2f7;color:#253247}.secondary:hover{background:#e2e8f0}
-.hint{color:var(--muted);font-size:13px;line-height:1.6;margin:12px 0 0}.hidden{display:none!important}
-.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.metric{min-width:0;background:#f6f9fb;border:1px solid #e8edf2;border-radius:12px;padding:16px}.metric strong{display:block;font-size:29px;line-height:1.2;margin-bottom:5px}.metric span{color:var(--muted);font-size:12px}
-.report-top{display:flex;align-items:start;justify-content:space-between;gap:14px;flex-wrap:wrap}.status-pill{display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;background:#edf2f7;color:#344054;font-size:12px;font-weight:800}
-.issue-list{margin-top:18px}.issue{padding:15px 0;border-bottom:1px solid #edf0f4}.issue:last-child{border-bottom:0}.issue-head{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-weight:750}.badge{border-radius:6px;padding:4px 7px;font-size:11px;font-weight:800}.badge.pass{background:var(--good-bg);color:var(--green-dark)}.badge.fix{background:var(--warn-bg);color:var(--warn)}
-.issue p{margin:8px 0 0;color:var(--muted);line-height:1.6;font-size:14px}.footnote{margin-top:18px;padding:12px 14px;border-radius:10px;background:#f6f8fa;color:var(--muted);font-size:12px;line-height:1.6}
-footer{padding:24px 16px 32px;color:var(--muted);text-align:center;font-size:12px}
-@media(max-width:560px){main{margin-top:28px}.top-note{font-size:10px;max-width:130px;line-height:1.4}.summary{grid-template-columns:1fr}.metric{padding:13px 15px}.metric strong{font-size:25px}.actions button{flex:1 1 100%}}
+.topbar{background:white;border-bottom:1px solid var(--line);padding:16px clamp(16px,5vw,64px);display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:center;gap:10px;font-size:23px;font-weight:800}.brand-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:var(--green);color:white}.top-note{color:var(--muted);font-size:12px;font-weight:700}
+main{width:min(920px,calc(100% - 32px));margin:32px auto 56px}.eyebrow{color:var(--green);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{margin:10px 0 12px;font-size:clamp(32px,6vw,48px);line-height:1.08}h1 span{color:var(--green)}.lead{max-width:680px;color:var(--muted);line-height:1.7}
+.panel{margin-top:22px;padding:clamp(18px,4vw,28px);background:white;border:1px solid var(--line);border-radius:16px;box-shadow:0 12px 34px #1725380b}h2{margin:0 0 16px;font-size:20px}label{display:block;margin-bottom:10px;font-weight:750;font-size:14px}
+textarea{display:block;width:100%;min-height:190px;resize:vertical;border:1px solid #cbd5e1;border-radius:11px;padding:14px;background:#fbfcfe;line-height:1.55;font-family:ui-monospace,monospace;font-size:13px}textarea:focus{outline:3px solid #147d5526;border-color:var(--green)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}button{border:0;border-radius:10px;padding:12px 17px;font-weight:750;cursor:pointer}.primary{background:var(--green);color:white}.secondary{background:#edf2f7;color:#253247}.hint{color:var(--muted);font-size:13px;line-height:1.6}.hidden{display:none!important}
+.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.metric{min-width:0;background:#f6f9fb;border:1px solid #e8edf2;border-radius:12px;padding:16px}.metric strong{display:block;font-size:29px;margin-bottom:5px}.metric span{color:var(--muted);font-size:12px}.report-top{display:flex;align-items:start;justify-content:space-between;gap:14px;flex-wrap:wrap}.status-pill{border-radius:999px;padding:6px 10px;background:#edf2f7;font-size:12px;font-weight:800}.issue-list{margin-top:18px}.issue{padding:15px 0;border-bottom:1px solid #edf0f4}.issue-head{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-weight:750}.badge{border-radius:6px;padding:4px 7px;font-size:11px;font-weight:800}.pass{background:#e8f7ef;color:var(--dark)}.fix{background:#fff4df;color:var(--warn)}.issue p{margin:8px 0 0;color:var(--muted);line-height:1.6;font-size:14px}pre{white-space:pre-wrap;overflow-wrap:anywhere;padding:12px;background:#f1f5f9;border-radius:8px;font-size:12px}.footnote{margin-top:18px;padding:12px 14px;border-radius:10px;background:#f6f8fa;color:var(--muted);font-size:12px;line-height:1.6}footer{text-align:center;padding:24px;color:var(--muted);font-size:12px}
+@media(max-width:560px){.summary{grid-template-columns:1fr}.actions button{flex:1 1 100%}.top-note{font-size:10px}}
 </style>
 </head>
 <body>
@@ -41,37 +31,19 @@ footer{padding:24px 16px 32px;color:var(--muted);text-align:center;font-size:12p
 <p class="hint">This version analyzes HTML that you paste here. It does not automatically visit or scan a website URL. Your pasted HTML is processed in this browser page and is not uploaded by this tool.</p>
 </section>
 <section class="panel hidden" id="report" aria-labelledby="report-heading" aria-live="polite">
-<div class="report-top"><div><h2 id="report-heading">Audit report</h2><p class="hint" id="reportSummary" style="margin-top:-8px"></p></div><span class="status-pill" id="reportStatus">Basic HTML checks</span></div>
-<div class="summary" aria-label="Report summary"><div class="metric"><strong id="score">—</strong><span>Basic checklist score / 100</span></div><div class="metric"><strong id="passed">—</strong><span>Checks passed</span></div><div class="metric"><strong id="problems">—</strong><span>Checks needing attention</span></div></div>
-<div class="panel hidden" id="verifyPanel">
-  <h2>Fix verification</h2>
-  <p id="verifyMessage">Run another audit to compare your results.</p>
-  <div class="summary">
-    <div class="metric">
-      <strong id="previousScore">—</strong>
-      <span>Previous score</span>
-    </div>
-    <div class="metric">
-      <strong id="currentScore">—</strong>
-      <span>Current score</span>
-    </div>
-    <div class="metric">
-      <strong id="scoreChange">—</strong>
-      <span>Score change</span>
-    </div>
-  </div>
-</div>
+<div class="report-top"><div><h2 id="report-heading">Audit report</h2><p class="hint" id="reportSummary"></p></div><span class="status-pill" id="reportStatus">Basic HTML checks</span></div>
+<div class="summary"><div class="metric"><strong id="score">—</strong><span>Basic checklist score / 100</span></div><div class="metric"><strong id="passed">—</strong><span>Checks passed</span></div><div class="metric"><strong id="problems">—</strong><span>Checks needing attention</span></div></div>
+<div class="issue-list" id="issues"></div>
+<section class="panel hidden" id="verifyPanel"><h2>Fix verification</h2><p id="verifyMessage" aria-live="polite">Run another audit to compare results.</p><div class="summary"><div class="metric"><strong id="previousScore">—</strong><span>Previous score</span></div><div class="metric"><strong id="currentScore">—</strong><span>Current score</span></div><div class="metric"><strong id="scoreChange">—</strong><span>Score change</span></div></div></section>
 <div class="actions"><button class="primary" id="downloadBtn" type="button">Download JSON report</button><button class="secondary" id="downloadTxtBtn" type="button">Download text report</button></div>
-<p class="footnote">This score is a simple checklist result, not a Google ranking score or a full professional accessibility, performance, security, or SEO audit. Passing checks do not guarantee a page is problem-free.</p>
+<p class="footnote">This is a basic checklist, not a Google ranking score or a full professional accessibility, performance, security, or SEO audit.</p>
 </section>
-</main>
-<footer>SiteFix · A self-directed website audit project</footer>
+</main><footer>SiteFix · A self-directed website audit project</footer>
 <script>
 "use strict";
-const $=id=>document.getElementById(id);
-let lastReport=null;
-let previousReport=null;
-const SAMPLE_HTML=`<!doctype html>
+const $ = id => document.getElementById(id);
+let lastReport = null;
+const SAMPLE_HTML = `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -84,234 +56,125 @@ const SAMPLE_HTML=`<!doctype html>
 <main><p>We provide friendly local services.</p><img src="team.jpg" alt="Our team at work"></main>
 </body>
 </html>`;
-function addCheck(name,passed,recommendation,detail=""){return{name,passed:Boolean(passed),recommendation,detail}}
-function analyzeHtml(source){
-const doc=new DOMParser().parseFromString(source,"text/html");
-const title=(doc.querySelector("title")?.textContent||"").trim();
-const description=(doc.querySelector('meta[name="description"]')?.getAttribute("content")||"").trim();
-const viewport=doc.querySelector('meta[name="viewport"]');
-const h1s=[...doc.querySelectorAll("h1")],images=[...doc.querySelectorAll("img")];
-const htmlLang=(doc.documentElement.getAttribute("lang")||"").trim();
-const links=[...doc.querySelectorAll("a[href]")];
-const emptyLinks=links.filter(a=>!a.textContent.trim()&&!a.querySelector("img[alt],svg[aria-label],svg title"));
-const missingAlt=images.filter(img=>!img.hasAttribute("alt"));
-const checks=[
-addCheck("Page title",title.length>0,"Add a descriptive title inside the <title> element.",title?`Found: "${title.slice(0,120)}"`:"No non-empty title was detected."),
-addCheck("Meta description",description.length>0,"Add a concise, page-specific meta description.",description?`Found a description (${description.length} characters).`:"No non-empty meta description was detected."),
-addCheck("Mobile viewport",Boolean(viewport),'Add <meta name="viewport" content="width=device-width, initial-scale=1">.',viewport?"A viewport meta tag was detected.":"No viewport meta tag was detected."),
-addCheck("Main heading",h1s.length===1,"Use one clear main <h1> heading that describes the page.",h1s.length===1?"Exactly one h1 was detected.":`${h1s.length} h1 headings were detected; this simple check expects one.`),
-addCheck("Image alt attributes",missingAlt.length===0,'Add an alt attribute to each image. Use alt="" for decorative images.',images.length===0?"No images were found in the pasted HTML.":`${missingAlt.length} of ${images.length} images lack an alt attribute.`),
-addCheck("HTML language",htmlLang.length>0,'Set a language on the root element, for example <html lang="en">.',htmlLang?`Language attribute found: "${htmlLang}".`:"No language attribute was detected."),
-addCheck("Character encoding",Boolean(doc.querySelector("meta[charset]"))||Boolean(doc.querySelector('meta[http-equiv="content-type" i]')),'Declare UTF-8 near the start of the document with <meta charset="utf-8">.',"Checks whether a character encoding declaration exists."),
-addCheck("Link text",emptyLinks.length===0,"Give links meaningful accessible text, or an accessible name for icon-only links.",`${emptyLinks.length} link(s) may not have an accessible name in this HTML check.`)
-];
-const passed=checks.filter(c=>c.passed).length,issues=checks.length-passed;
-return{tool:"SiteFix HTML Audit",version:"1.0",createdAt:new Date().toISOString(),scope:"Pasted HTML only; not a live URL scan",score:Math.round(passed/checks.length*100),passed,issues,totalChecks:checks.length,checks};
+function addCheck(name, passed, recommendation, detail) {
+  return {name, passed: Boolean(passed), recommendation, detail};
 }
-
-function getIssueDetails(check) {
-  const fixes = {
-    "Page title": {
-      severity: "High",
-      why: "A descriptive title helps users and search engines understand the page.",
-      code: "<title>Describe Your Page</title>"
-    },
-    "Meta description": {
-      severity: "Medium",
-      why: "A useful description can help users understand the page in search results.",
-      code: '<meta name="description" content="Describe your page in a clear sentence.">'
-    },
-    "Mobile viewport": {
-      severity: "High",
-      why: "Without a viewport declaration, mobile browsers may render the page at an unsuitable width.",
-      code: '<meta name="viewport" content="width=device-width, initial-scale=1">'
-    },
-    "Main heading": {
-      severity: "Medium",
-      why: "A clear main heading helps users understand the page structure.",
-      code: "<h1>Your Main Page Heading</h1>"
-    },
-    "Image alt attributes": {
-      severity: "High",
-      why: "Missing alt attributes can make image content less accessible to screen-reader users.",
-      code: '<img src="image.jpg" alt="Describe the meaningful image">'
-    },
-    "HTML language": {
-      severity: "Medium",
-      why: "The document language helps assistive technology pronounce content correctly.",
-      code: '<html lang="en">'
-    },
-    "Character encoding": {
-      severity: "Medium",
-      why: "An explicit character encoding helps browsers interpret text correctly.",
-      code: '<meta charset="utf-8">'
-    },
-    "Link text": {
-      severity: "Medium",
-      why: "Links need accessible names so users can understand their purpose.",
-      code: '<a href="/services">View our services</a>'
-    }
-  };
-
-  return fixes[check.name] || {
-    severity: "Low",
-    why: "Review this check and confirm that the page meets the requirement.",
-    code: ""
-  };
+function analyzeHtml(source) {
+  const doc = new DOMParser().parseFromString(source, "text/html");
+  const title = (doc.querySelector("title")?.textContent || "").trim();
+  const description = (doc.querySelector('meta[name="description"]')?.getAttribute("content") || "").trim();
+  const viewport = doc.querySelector('meta[name="viewport"]');
+  const h1s = [...doc.querySelectorAll("h1")];
+  const images = [...doc.querySelectorAll("img")];
+  const lang = (doc.documentElement.getAttribute("lang") || "").trim();
+  const links = [...doc.querySelectorAll("a[href]")];
+  const emptyLinks = links.filter(a => !a.textContent.trim() && !a.querySelector("img[alt],svg[aria-label],svg title"));
+  const missingAlt = images.filter(img => !img.hasAttribute("alt"));
+  const checks = [
+    addCheck("Page title", title.length > 0, "Add a descriptive title inside the <title> element.", title ? `Found: "${title.slice(0,120)}"` : "No non-empty title was detected."),
+    addCheck("Meta description", description.length > 0, "Add a concise, page-specific meta description.", description ? `Found a description (${description.length} characters).` : "No non-empty meta description was detected."),
+    addCheck("Mobile viewport", Boolean(viewport), 'Add <meta name="viewport" content="width=device-width, initial-scale=1">.', viewport ? "A viewport meta tag was detected." : "No viewport meta tag was detected."),
+    addCheck("Main heading", h1s.length === 1, "Use one clear main <h1> heading.", h1s.length === 1 ? "Exactly one h1 was detected." : `${h1s.length} h1 headings were detected; this check expects one.`),
+    addCheck("Image alt attributes", missingAlt.length === 0, 'Add alt attributes to images; use alt="" for decorative images.', images.length === 0 ? "No images were found." : `${missingAlt.length} of ${images.length} images lack an alt attribute.`),
+    addCheck("HTML language", lang.length > 0, 'Set a language on the root element, for example <html lang="en">.', lang ? `Language attribute found: "${lang}".` : "No language attribute was detected."),
+    addCheck("Character encoding", Boolean(doc.querySelector("meta[charset]")) || Boolean(doc.querySelector('meta[http-equiv="content-type" i]')), 'Declare UTF-8 with <meta charset="utf-8">.', "Checks whether a character encoding declaration exists."),
+    addCheck("Link text", emptyLinks.length === 0, "Give links meaningful accessible text or an accessible name.", `${emptyLinks.length} link(s) may not have an accessible name.`)
+  ];
+  const passed = checks.filter(c => c.passed).length;
+  return {tool:"SiteFix HTML Audit",version:"1.1",createdAt:new Date().toISOString(),scope:"Pasted HTML only; not a live URL scan",score:Math.round(passed/checks.length*100),passed,issues:checks.length-passed,totalChecks:checks.length,checks};
 }
-
-function renderReport(result) {
-  $("score").textContent = result.score;
-  $("passed").textContent =
-    `${result.passed}/${result.totalChecks}`;
-  $("problems").textContent = result.issues;
-
-  $("reportSummary").textContent =
-    `${result.totalChecks} basic checks completed on the pasted HTML.`;
-
-  $("reportStatus").textContent =
-    result.issues === 0
-      ? "All checks passed"
-      : "Review recommended";
-
+function detailsFor(name) {
+  const map = {
+    "Page title": ["High","A descriptive title helps users and search engines understand the page.","<title>Describe Your Page</title>"],
+    "Meta description": ["Medium","A useful description can help users understand the page in search results.",'<meta name="description" content="Describe your page in a clear sentence.">'],
+    "Mobile viewport": ["High","Without a viewport declaration, mobile browsers may render the page at an unsuitable width.",'<meta name="viewport" content="width=device-width, initial-scale=1">'],
+    "Main heading": ["Medium","A clear main heading helps users understand the page structure.","<h1>Your Main Page Heading</h1>"],
+    "Image alt attributes": ["High","Alt attributes help make image content accessible.",'<img src="image.jpg" alt="Describe the meaningful image">'],
+    "HTML language": ["Medium","The document language helps assistive technology pronounce content correctly.",'<html lang="en">'],
+    "Character encoding": ["Medium","An explicit character encoding helps browsers interpret text correctly.",'<meta charset="utf-8">'],
+    "Link text": ["Medium","Links need accessible names so users can understand their purpose.",'<a href="/services">View our services</a>']
+  };
+  return map[name] || ["Low","Review this check.",""];
+}
+function renderReport(report) {
+  $("score").textContent = report.score;
+  $("passed").textContent = `${report.passed}/${report.totalChecks}`;
+  $("problems").textContent = report.issues;
+  $("reportSummary").textContent = `${report.totalChecks} basic checks completed on the pasted HTML.`;
+  $("reportStatus").textContent = report.issues === 0 ? "All checks passed" : "Review recommended";
   const box = $("issues");
   box.replaceChildren();
-
-  result.checks.forEach(check => {
-    const article = document.createElement("article");
-    article.className = "issue";
-
-    const heading = document.createElement("div");
-    heading.className = "issue-head";
-
-    const badge = document.createElement("span");
-    badge.className = `badge ${check.passed ? "pass" : "fix"}`;
-    badge.textContent = check.passed ? "PASS" : "REVIEW";
-
-    const title = document.createElement("span");
-    title.textContent = check.name;
-    heading.append(badge, title);
-    article.append(heading);
-
-    const detail = document.createElement("p");
-    detail.textContent = check.detail;
-    article.append(detail);
-
+  report.checks.forEach(check => {
+    const article = document.createElement("article"); article.className = "issue";
+    const heading = document.createElement("div"); heading.className = "issue-head";
+    const badge = document.createElement("span"); badge.className = `badge ${check.passed ? "pass" : "fix"}`; badge.textContent = check.passed ? "PASS" : "REVIEW";
+    const title = document.createElement("span"); title.textContent = check.name;
+    heading.append(badge,title); article.append(heading);
+    const detail = document.createElement("p"); detail.textContent = check.detail; article.append(detail);
     if (!check.passed) {
-      const info = getIssueDetails(check);
-
-      const severity = document.createElement("p");
-      severity.textContent = `Suggested priority: ${info.severity}`;
-      severity.style.fontWeight = "700";
-      article.append(severity);
-
-      const why = document.createElement("p");
-      why.textContent = `Why it matters: ${info.why}`;
-      article.append(why);
-
-      const recommendation = document.createElement("p");
-      recommendation.textContent =
-        `Recommended action: ${check.recommendation}`;
-      article.append(recommendation);
-
-      if (info.code) {
-        const label = document.createElement("p");
-        label.textContent = "Example fix — review before using:";
-        article.append(label);
-
-        const code = document.createElement("pre");
-        code.textContent = info.code;
-        code.style.whiteSpace = "pre-wrap";
-        code.style.overflowWrap = "anywhere";
-        code.style.padding = "12px";
-        code.style.background = "#f1f5f9";
-        code.style.borderRadius = "8px";
-        code.style.fontSize = "12px";
-        article.append(code);
-
-        const copyButton = document.createElement("button");
-        copyButton.type = "button";
-        copyButton.className = "secondary";
-        copyButton.textContent = "Copy example fix";
-
-        copyButton.addEventListener("click", async () => {
-          try {
-            await navigator.clipboard.writeText(info.code);
-            copyButton.textContent = "Copied!";
-          } catch {
-            copyButton.textContent =
-              "Copy unavailable — select the example manually";
-          }
+      const [severity,why,example] = detailsFor(check.name);
+      for (const text of [`Suggested priority: ${severity}`,`Why it matters: ${why}`,`Recommended action: ${check.recommendation}`]) {
+        const p = document.createElement("p"); p.textContent = text; article.append(p);
+      }
+      if (example) {
+        const label = document.createElement("p"); label.textContent = "Example fix — review before using:"; article.append(label);
+        const pre = document.createElement("pre"); pre.textContent = example; article.append(pre);
+        const copy = document.createElement("button"); copy.className = "secondary"; copy.type = "button"; copy.textContent = "Copy example fix";
+        copy.addEventListener("click", async () => {
+          try { await navigator.clipboard.writeText(example); copy.textContent = "Copied!"; }
+          catch { copy.textContent = "Copy unavailable — select the example manually"; }
         });
-
-        article.append(copyButton);
+        article.append(copy);
       }
     }
-
     box.append(article);
   });
-
   $("report").classList.remove("hidden");
-  $("report").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+  $("report").scrollIntoView({behavior:"smooth",block:"start"});
 }
-
-function downloadFile(contents,mime,filename){
-const blob=new Blob([contents],{type:mime}),url=URL.createObjectURL(blob),link=document.createElement("a");
-link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+function updateVerification(previous,current) {
+  if (!previous) { $("verifyPanel").classList.add("hidden"); return; }
+  const change = current.score - previous.score;
+  $("previousScore").textContent = previous.score;
+  $("currentScore").textContent = current.score;
+  $("scoreChange").textContent = `${change > 0 ? "+" : ""}${change}`;
+  $("verifyMessage").textContent = change > 0 ? `Your score improved by ${change} points.` : change < 0 ? `Your score decreased by ${Math.abs(change)} points.` : "Your score stayed the same.";
+  $("verifyPanel").classList.remove("hidden");
 }
-$("scanBtn").addEventListener("click",()=>{
-  const source=$("htmlInput").value.trim();
-
-  if(!source){
-    alert('Paste HTML first, or tap "Load sample HTML" to try SiteFix.');
-    $("htmlInput").focus();
-    return;
+function downloadFile(contents,mime,filename) {
+  const blob = new Blob([contents],{type:mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url),1000);
+}
+$("scanBtn").addEventListener("click", () => {
+  const source = $("htmlInput").value.trim();
+  if (!source) { alert('Paste HTML first, or tap "Load sample HTML" to try SiteFix.'); $("htmlInput").focus(); return; }
+  try {
+    const current = analyzeHtml(source);
+    updateVerification(lastReport,current);
+    lastReport = current;
+    renderReport(current);
+  } catch (error) {
+    console.error("SiteFix audit error:",error);
+    alert("SiteFix could not analyze this HTML. Reload the page and try again.");
   }
-
-  const newReport=analyzeHtml(source);
-
-  if(lastReport){
-    previousReport=lastReport;
-    const change=newReport.score-previousReport.score;
-
-    $("previousScore").textContent=previousReport.score;
-    $("currentScore").textContent=newReport.score;
-    $("scoreChange").textContent=`${change>0?"+":""}${change}`;
-
-    $("verifyMessage").textContent=change>0
-      ? `Your score improved by ${change} points.`
-      : change<0
-        ? `Your score decreased by ${Math.abs(change)} points.`
-        : "Your score stayed the same.";
-
-    $("verifyPanel").classList.remove("hidden");
-  }else{
-    $("verifyPanel").classList.add("hidden");
-  }
-
-  lastReport=newReport;
-  renderReport(lastReport);
 });
-$("sampleBtn").addEventListener("click",()=>{$("htmlInput").value=SAMPLE_HTML;$("htmlInput").focus()});
-$("clearBtn").addEventListener("click",()=>{
-  $("htmlInput").value="";
-  $("report").classList.add("hidden");
-  $("issues").replaceChildren();
-  lastReport=null;
-  previousReport=null;
-  $("verifyPanel").classList.add("hidden");
-  $("htmlInput").focus();
+$("sampleBtn").addEventListener("click", () => { $("htmlInput").value = SAMPLE_HTML; $("htmlInput").focus(); });
+$("clearBtn").addEventListener("click", () => {
+  $("htmlInput").value = ""; $("report").classList.add("hidden"); $("issues").replaceChildren();
+  $("verifyPanel").classList.add("hidden"); $("previousScore").textContent = "—"; $("currentScore").textContent = "—"; $("scoreChange").textContent = "—";
+  $("verifyMessage").textContent = "Run another audit to compare results."; lastReport = null; $("htmlInput").focus();
 });
-$("downloadBtn").addEventListener("click",()=>{if(lastReport)downloadFile(JSON.stringify(lastReport,null,2),"application/json","sitefix-audit-report.json")});
-$("downloadTxtBtn").addEventListener("click",()=>{
-if(!lastReport)return;
-const lines=["SITEFIX — HTML AUDIT REPORT",`Created: ${lastReport.createdAt}`,`Scope: ${lastReport.scope}`,`Basic checklist score: ${lastReport.score}/100`,`Passed: ${lastReport.passed}/${lastReport.totalChecks}`,`Checks needing attention: ${lastReport.issues}`,"",...lastReport.checks.flatMap(c=>[`${c.passed?"[PASS]":"[REVIEW]"} ${c.name}`,`  ${c.detail}`,...(!c.passed?[`  Recommendation: ${c.recommendation}`]:[]),""])];
-downloadFile(lines.join("\n"),"text/plain;charset=utf-8","sitefix-audit-report.txt");
+$("downloadBtn").addEventListener("click", () => {
+  if (lastReport) downloadFile(JSON.stringify(lastReport,null,2),"application/json","sitefix-audit-report.json");
+});
+$("downloadTxtBtn").addEventListener("click", () => {
+  if (!lastReport) return;
+  const lines = ["SITEFIX — HTML AUDIT REPORT",`Created: ${lastReport.createdAt}`,`Scope: ${lastReport.scope}`,`Basic checklist score: ${lastReport.score}/100`,`Passed: ${lastReport.passed}/${lastReport.totalChecks}`,`Checks needing attention: ${lastReport.issues}`,"",...lastReport.checks.flatMap(c => [`${c.passed ? "[PASS]" : "[REVIEW]"} ${c.name}`,`  ${c.detail}`,...(!c.passed ? [`  Recommendation: ${c.recommendation}`] : []),""])];
+  downloadFile(lines.join("\n"),"text/plain;charset=utf-8","sitefix-audit-report.txt");
 });
 </script>
 </body>
-  </html>
-  
+</html>
